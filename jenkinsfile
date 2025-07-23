@@ -1,22 +1,37 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10-slim'
-        }
-    }
+    agent any
+
     stages {
-        stage('Install Dependencies') {
+        stage('Clone') {
             steps {
-                sh 'pip install flask'
+                echo 'Cloning the repository...'
+                // Git auto-clone if you configure repo in Jenkins job
             }
         }
 
-        stage('Run Flask App') {
+        stage('Build') {
             steps {
-                sh 'python app.py &'
-                sh 'sleep 5'
-                sh 'curl http://localhost:5000'
+                echo 'Building the application...'
+                sh 'chmod +x hello.sh'
+            }
+        }
+
+        stage('Run Script') {
+            steps {
+                echo 'Running the script...'
+                sh './hello.sh'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
             }
         }
     }
-}
